@@ -1,11 +1,12 @@
 {
-  "name": "claude-chat-share",
+  "name": "claudeshare",
   "version": "1.0.0",
   "description": "Ultra-fast CLI tool to copy and transfer Claude Code chat sessions between computers via 4-digit PIN code",
   "main": "src/index.js",
   "bin": {
-    "claude-chat-share": "bin/cli.js",
     "claudeshare": "bin/cli.js",
+    "claude-chat-share": "bin/cli.js",
+    "c-share": "bin/cli.js",
     "ccs": "bin/cli.js",
     "cdrop": "bin/cli.js"
   },
@@ -23,12 +24,13 @@
     "deploy": "vercel --prod"
   },
   "keywords": [
+    "claudeshare",
     "claude",
     "claude-code",
     "chat",
     "share",
     "ccs",
-    "claudeshare",
+    "c-share",
     "cdrop",
     "cli",
     "npx"

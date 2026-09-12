@@ -60,7 +60,7 @@ export function displayTransferCode(code, serverUrl) {
     chalk.bold.cyan(`    ${code}    `),
     '',
     chalk.dim('Run on destination PC:'),
-    chalk.green.bold(`npx claude-chat-share ${code}`),
+    chalk.green.bold(`npx claudeshare ${code}`),
     '',
     chalk.yellow('Code expires in 15 mins or after 1 download.')
   ].join('\n');
