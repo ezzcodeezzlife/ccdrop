@@ -13,7 +13,9 @@ No accounts. No login. No setup.
 ## How it works
 
 1. **Share**: run `npx ccdrop` on the computer with the chat, pick the session, get a 4-digit PIN.
-2. **Import**: run `npx ccdrop <PIN>` on the other computer. The session lands in `~/.claude/projects/`.
+2. **Import**: run `npx ccdrop <PIN>` on the other computer. The session lands in `~/.claude/projects/` and is registered with the Claude desktop app, where it appears after a restart.
+
+The chat is retargeted at the current directory on the way in, so a session shared from another machine - or another operating system - resumes cleanly. The sender's cloud-sync records are stripped.
 
 ## Privacy
 

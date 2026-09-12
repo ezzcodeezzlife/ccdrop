@@ -1,14 +1,20 @@
 #!/usr/bin/env node
 
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { Command } from 'commander';
 import { runShareCommand, runReceiveCommand, runServerCommand } from '../src/index.js';
+
+const packageJsonPath = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'package.json');
+const { version } = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
 
 const program = new Command();
 
 program
   .name('ccdrop')
   .description('Ultra-fast CLI tool to transfer Claude Code chats between computers via 4-digit PIN code')
-  .version('1.0.0');
+  .version(version);
 
 program
   .command('share', { isDefault: false })

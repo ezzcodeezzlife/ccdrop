@@ -3,10 +3,19 @@ import path from 'path';
 import os from 'os';
 
 /**
- * Get standard ~/.claude directory path
+ * Get the Claude Code data directory, honouring a CLAUDE_CONFIG_DIR override
  */
 export function getClaudeDir() {
-  return path.join(os.homedir(), '.claude');
+  return process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
+}
+
+/**
+ * Get the path to the Claude Code config file
+ */
+export function getClaudeConfigFile() {
+  return process.env.CLAUDE_CONFIG_DIR
+    ? path.join(process.env.CLAUDE_CONFIG_DIR, '.claude.json')
+    : path.join(os.homedir(), '.claude.json');
 }
 
 /**

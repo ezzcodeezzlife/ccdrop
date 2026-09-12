@@ -65,6 +65,11 @@ export async function runReceiveCommand(codeArg, options = {}) {
     }
 
     console.log(`\nSession imported successfully into ${result.targetPath}`);
+
+    if (result.desktopEntryPath) {
+      console.log(`Added to the Claude desktop app - restart it to see the chat.`);
+    }
+
     console.log(`Run 'claude' or 'claude --resume' to continue.`);
   } catch (err) {
     console.error(`Error: ${err.message}`);
