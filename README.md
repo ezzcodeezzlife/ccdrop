@@ -31,6 +31,40 @@ The session is uploaded to a small relay server so the second computer can fetch
 | `npx ccdrop` | Select a chat session and get a 4-digit PIN |
 | `npx ccdrop <code>` | Download and import a chat using the PIN |
 
+## Self-hosting
+
+By default `npx ccdrop` uses the public relay. Run your own to keep every byte on a machine you control.
+
+### Run the relay locally
+
+```bash
+npx ccdrop server                  # relay on http://localhost:3000
+npx ccdrop server -p 8080          # custom port
+```
+
+The relay stores everything in RAM and wipes each session the moment it is downloaded.
+
+### Point the client at your relay
+
+```bash
+npx ccdrop -s http://localhost:3000               # share to your local relay
+npx ccdrop -s http://localhost:3000 4829          # import from your local relay
+```
+
+Replace `localhost` with your server's LAN IP, hostname, or public URL as needed.
+
+### Deploy to Vercel
+
+```bash
+npm run deploy     # uses `vercel --prod`
+```
+
+Then point clients at your deployment:
+
+```bash
+npx ccdrop -s https://your-app.vercel.app
+```
+
 ## License
 
 MIT
