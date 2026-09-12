@@ -1,28 +1,27 @@
 # ccdrop
 
-CLI tool to transfer Claude Code chat sessions between computers and accounts using a 4-digit PIN code.
-
-## Quick Start
-
-### 1. Share a Chat (Sender)
-Run on the computer with the chat session:
+**Super easy way to move Claude Code chat sessions between computers.** One command to share, one command to grab — that's it.
 
 ```bash
-npx ccdrop
+npx ccdrop              # share: pick a session, get a 4-digit PIN
+npx ccdrop 4829         # import: paste the PIN, done
 ```
 
-Select a local Claude Code chat session. You will receive a 4-digit PIN code (for example: 4829).
+No accounts. No login. No setup.
 
-### 2. Import a Chat (Receiver)
-Run on the destination computer:
+## How it works
 
-```bash
-npx ccdrop 4829
-```
+1. **Share** — run `npx ccdrop` on the computer with the chat, pick the session, get a 4-digit PIN.
+2. **Import** — run `npx ccdrop <PIN>` on the other computer. The session lands in `~/.claude/projects/`.
 
-Downloads the session payload and imports it into your local Claude environment (`~/.claude/projects/`).
+## Privacy
 
-The session payload is deleted from the server immediately after download.
+The session is uploaded to a small relay server so the second computer can fetch it.
+
+- **RAM only** — sessions live in an in-memory store (no database, no disk, no backups).
+- **Auto-deleted on download** — the payload is wiped from memory the instant the receiver grabs it.
+- **15-minute expiry** — even if nobody downloads it, the PIN self-destructs after 15 minutes.
+- **No accounts, no logs** — there is no way to associate a PIN with a person.
 
 ## Commands
 
@@ -30,7 +29,7 @@ The session payload is deleted from the server immediately after download.
 | :--- | :--- |
 | `npx ccdrop` | Select a chat session and get a 4-digit PIN |
 | `npx ccdrop <code>` | Download and import a chat using the PIN |
-| `npx claude-drop` | Alias for `ccdrop` |
 
 ## License
+
 MIT
