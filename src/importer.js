@@ -1,23 +1,99 @@
 import fs from 'fs';
 import path from 'path';
-import os from 'os';
 import { getClaudeDir } from './scanner.js';
+import { registerDesktopSession } from './desktop.js';
+
+// Claude Code truncates project keys past this length and appends a hash
+const PROJECT_KEY_MAX_LENGTH = 200;
+
+// Keys whose value is a single working-directory path, rewritten on import
+const CWD_KEYS = new Set(['cwd', 'workingDirectory', 'originalCwd']);
 
 /**
- * Encode a workspace filesystem path to Claude Code's project key format
+ * Hash a path the way Claude Code does, for keys that exceed the length limit
+ */
+function hashPath(value) {
+  let hash = 0;
+
+  for (let i = 0; i < value.length; i++) {
+    hash = (hash << 5) - hash + value.charCodeAt(i) | 0;
+  }
+
+  return Math.abs(hash).toString(36);
+}
+
+/**
+ * Encode a workspace filesystem path to Claude Code's project key format.
+ *
+ * Every non-alphanumeric character becomes a dash, so this covers dots and
+ * drive colons too: /Users/alex/.config -> -Users-alex--config, and
+ * C:\Users\alex\Desktop -> C--Users-alex-Desktop. Long keys are truncated
+ * and suffixed with a hash, matching Claude Code's own 200-character limit.
  */
 export function encodeProjectKey(targetPath) {
   const normalized = path.resolve(targetPath);
+  const key = normalized.replace(/[^a-zA-Z0-9]/g, '-');
 
-  if (process.platform === 'win32') {
-    // Windows: C:\Users\MYPC\Desktop -> C--Users-MYPC-Desktop
-    return normalized
-      .replace(/^([a-zA-Z]):[/\\]/, '$1--')
-      .replace(/[/\\]/g, '-');
-  } else {
-    // Unix/macOS: /Users/alex/Desktop -> -Users-alex-Desktop
-    return normalized.replace(/[/\\]/g, '-');
+  if (key.length <= PROJECT_KEY_MAX_LENGTH) return key;
+
+  return `${key.slice(0, PROJECT_KEY_MAX_LENGTH)}-${hashPath(normalized)}`;
+}
+
+/**
+ * Rewrite a transferred transcript so it belongs to this machine.
+ *
+ * A transcript records the sender's working directory in dedicated fields and
+ * again inside rendered prompt text, so resuming an import untouched would
+ * hand Claude Code a directory that does not exist here - possibly one from
+ * another operating system entirely.
+ */
+export function rebaseSession(content, targetPath, originalCwd) {
+  const entries = [];
+
+  for (const line of content.split('\n').filter(Boolean)) {
+    try {
+      const entry = JSON.parse(line);
+
+      // Cloud-sync records carry the sender's account, not the receiver's
+      if (entry.type !== 'bridge-session') entries.push(entry);
+    } catch (err) {
+      // Ignore non-JSON lines
+    }
   }
+
+  const sourceCwd = originalCwd || entries.find(entry => typeof entry.cwd === 'string')?.cwd || '';
+  const rebased = entries.map(entry => JSON.stringify(retargetPaths(entry, targetPath, sourceCwd)));
+
+  return rebased.length ? rebased.join('\n') + '\n' : '';
+}
+
+/**
+ * Recursively point every recorded working directory at the import target
+ */
+function retargetPaths(value, targetPath, sourceCwd) {
+  if (typeof value === 'string') {
+    return sourceCwd && value.includes(sourceCwd)
+      ? value.split(sourceCwd).join(targetPath)
+      : value;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(item => retargetPaths(item, targetPath, sourceCwd));
+  }
+
+  if (value && typeof value === 'object') {
+    const result = {};
+
+    for (const [key, nested] of Object.entries(value)) {
+      result[key] = CWD_KEYS.has(key) && typeof nested === 'string'
+        ? targetPath
+        : retargetPaths(nested, targetPath, sourceCwd);
+    }
+
+    return result;
+  }
+
+  return value;
 }
 
 /**
@@ -26,17 +102,23 @@ export function encodeProjectKey(targetPath) {
 export function importClaudeSession(payload, targetPath = process.cwd()) {
   const { sessionId, content, title, originalCwd } = payload;
   const claudeDir = getClaudeDir();
-  const projectKey = encodeProjectKey(targetPath);
+  const resolvedTarget = path.resolve(targetPath);
+  const projectKey = encodeProjectKey(resolvedTarget);
   const projectDir = path.join(claudeDir, 'projects', projectKey);
 
   // 1. Create project folder if needed
-  if (!fs.existsSync(projectDir)) {
-    fs.mkdirSync(projectDir, { recursive: true });
-  }
+  fs.mkdirSync(projectDir, { recursive: true });
 
-  // 2. Write session JSONL file
+  // 2. Write session JSONL file, retargeted at this machine
   const sessionFilePath = path.join(projectDir, `${sessionId}.jsonl`);
-  fs.writeFileSync(sessionFilePath, content, 'utf8');
+  fs.writeFileSync(sessionFilePath, rebaseSession(content, resolvedTarget, originalCwd), 'utf8');
+
+  try {
+    // Match the permissions Claude Code gives its own transcripts
+    fs.chmodSync(sessionFilePath, 0o600);
+  } catch (err) {
+    // Ignore on filesystems without POSIX permissions
+  }
 
   // 3. Append to ~/.claude/history.jsonl if present
   try {
@@ -45,7 +127,7 @@ export function importClaudeSession(payload, targetPath = process.cwd()) {
     const historyEntry = JSON.stringify({
       display: displayTitle,
       timestamp: Date.now(),
-      project: targetPath,
+      project: resolvedTarget,
       sessionId
     }) + '\n';
 
@@ -54,11 +136,19 @@ export function importClaudeSession(payload, targetPath = process.cwd()) {
     // Ignore history append failure if history.jsonl isn't writable
   }
 
+  // 4. Register with the Claude desktop app, which keeps its own chat index
+  const desktopEntryPath = registerDesktopSession({
+    cliSessionId: sessionId,
+    cwd: resolvedTarget,
+    title
+  });
+
   return {
     sessionId,
     sessionFilePath,
     projectKey,
-    targetPath
+    targetPath: resolvedTarget,
+    desktopEntryPath
   };
 }
 
@@ -68,13 +158,17 @@ export function importClaudeSession(payload, targetPath = process.cwd()) {
 export function exportSessionToMarkdown(content) {
   const lines = content.split('\n').filter(Boolean);
   let markdown = `# Claude Code Chat Session Export\n\n`;
+  let titleWritten = false;
 
   for (const line of lines) {
     try {
       const entry = JSON.parse(line);
 
-      if (entry.type === 'ai-title' && entry.aiTitle) {
-        markdown += `**Title:** ${entry.aiTitle}\n\n---\n\n`;
+      const entryTitle = entry.aiTitle || entry.customTitle;
+
+      if (!titleWritten && (entry.type === 'ai-title' || entry.type === 'custom-title') && entryTitle) {
+        markdown += `**Title:** ${entryTitle}\n\n---\n\n`;
+        titleWritten = true;
       }
 
       if (entry.type === 'user' && entry.message) {
