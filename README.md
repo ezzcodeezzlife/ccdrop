@@ -1,6 +1,6 @@
 # ccdrop
 
-**Super easy way to move Claude Code chat sessions between computers.** One command to share, one command to grab. That's it.
+**Super easy way to copy a Claude Code chat between computers**: upload it to a small RAM-only server, get a 4-digit PIN, then run `npx ccdrop <PIN>` on the other machine. The session is auto-deleted from the server the instant it lands.
 
 ```bash
 npx ccdrop              # share: pick a session, get a 4-digit PIN
