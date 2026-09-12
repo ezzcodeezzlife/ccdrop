@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f172a">
+<meta name="color-scheme" content="dark">
+
+<!-- Primary SEO -->
+<title>ccdrop · Share Claude Code chats between computers with a 4-digit PIN</title>
+<meta name="description" content="ccdrop is a zero-friction CLI (npx ccdrop) for Anthropic's Claude Code. Pick a chat session, get a 4-digit PIN, run npx ccdrop &lt;PIN&gt; on any other computer. RAM-only relay, auto-deleted on download, no accounts, no logs. Privacy-first.">
+<meta name="keywords" content="ccdrop, claude, claude-code, claude ai, anthropic, claude chat, ai coding assistant, ai tools, developer tools, cli, cli tool, npx, npm, vercel, serverless, chat share, session share, transfer chat between computers, ephemeral, privacy, ram-only, no logs, pin code, pin transfer, share claude chat, share claude code session, cross computer, multi device, relay, qr code">
+<meta name="author" content="ezzcodeezzlife">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<meta name="googlebot" content="index, follow">
+<meta name="rating" content="general">
+<meta name="distribution" content="global">
+<meta name="revisit-after" content="7 days">
+<meta name="language" content="en">
+<meta name="application-name" content="ccdrop">
+<meta name="generator" content="ccdrop">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<!-- Canonical and alternates -->
+<link rel="canonical" href="https://ezzcodeezzlife.github.io/ccdrop/">
+<link rel="alternate" type="application/rss+xml" title="ccdrop Releases" href="https://github.com/ezzcodeezzlife/ccdrop/releases.atom">
+<link rel="alternate" type="application/atom+xml" title="ccdrop Releases (Atom)" href="https://github.com/ezzcodeezzlife/ccdrop/releases.atom">
+<link rel="sitemap" type="application/xml" href="https://ezzcodeezzlife.github.io/ccdrop/sitemap.xml">
+
+<!-- Open Graph / Facebook / Discord / Slack / LinkedIn -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ccdrop">
+<meta property="og:title" content="ccdrop · Share Claude Code chats with a 4-digit PIN">
+<meta property="og:description" content="Lightning-fast CLI to share Claude Code chats between computers via a 4-digit PIN. RAM-only relay, auto-deleted on download. npx ccdrop.">
+<meta property="og:url" content="https://ezzcodeezzlife.github.io/ccdrop/">
+<meta property="og:image" content="https://ezzcodeezzlife.github.io/ccdrop/og-image.svg">
+<meta property="og:image:secure_url" content="https://ezzcodeezzlife.github.io/ccdrop/og-image.svg">
+<meta property="og:image:type" content="image/svg+xml">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ccdrop logo with the tagline: Share Claude Code chats between computers with a 4-digit PIN">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="article:author" content="ezzcodeezzlife">
+<meta property="article:modified_time" content="2026-09-13T00:00:00Z">
+<meta property="profile:first_name" content="ezzcodeezzlife">
+<meta property="profile:username" content="ezzcodeezzlife">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@ezzcodeezzlife">
+<meta name="twitter:creator" content="@ezzcodeezzlife">
+<meta name="twitter:title" content="ccdrop · Share Claude Code chats with a 4-digit PIN">
+<meta name="twitter:description" content="Lightning-fast CLI (npx ccdrop) to share Claude Code chats between computers via a 4-digit PIN. RAM-only, no accounts, no logs.">
+<meta name="twitter:image" content="https://ezzcodeezzlife.github.io/ccdrop/og-image.svg">
+<meta name="twitter:image:alt" content="ccdrop logo with the tagline: Share Claude Code chats between computers with a 4-digit PIN">
+<meta name="twitter:label1" content="Install">
+<meta name="twitter:data1" content="npx ccdrop">
+<meta name="twitter:label2" content="License">
+<meta name="twitter:data2" content="MIT">
+
+<!-- App links / mobile -->
+<meta name="apple-mobile-web-app-title" content="ccdrop">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+
+<!-- Dublin Core (older search engines / archives) -->
+<meta name="DC.title" content="ccdrop">
+<meta name="DC.creator" content="ezzcodeezzlife">
+<meta name="DC.subject" content="Claude Code chat sharing CLI; 4-digit PIN transfer; RAM-only relay; privacy; no logs">
+<meta name="DC.description" content="Lightning-fast CLI to share Claude Code chats between computers via a 4-digit PIN.">
+<meta name="DC.publisher" content="ezzcodeezzlife">
+<meta name="DC.contributor" content="open-source contributors on GitHub">
+<meta name="DC.date" content="2026-09-13">
+<meta name="DC.type" content="Software">
+<meta name="DC.format" content="text/html; charset=utf-8">
+<meta name="DC.identifier" content="https://ezzcodeezzlife.github.io/ccdrop/">
+<meta name="DC.source" content="https://github.com/ezzcodeezzlife/ccdrop">
+<meta name="DC.language" content="en">
+<meta name="DC.rights" content="MIT">
+<meta name="DC.coverage" content="Worldwide">
+
+<!-- JSON-LD: SoftwareApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ccdrop",
+  "alternateName": ["claude-chat-share", "ccdrop CLI"],
+  "url": "https://ezzcodeezzlife.github.io/ccdrop/",
+  "downloadUrl": "https://www.npmjs.com/package/ccdrop",
+  "softwareVersion": "1.1.0",
+  "softwareRequirements": "Node.js >= 18",
+  "applicationCategory": "DeveloperApplication",
+  "applicationSubCategory": "Command Line Utility",
+  "operatingSystem": "Windows, macOS, Linux",
+  "description": "Ultra-fast, privacy-first CLI to share and transfer Claude Code chat sessions between computers via a 4-digit PIN code. RAM-only relay, auto-deletes on download, no accounts, no logs.",
+  "image": "https://ezzcodeezzlife.github.io/ccdrop/og-image.svg",
+  "screenshot": "https://ezzcodeezzlife.github.io/ccdrop/og-image.svg",
+  "featureList": [
+    "One-command Claude Code chat sharing",
+    "4-digit PIN session transfer",
+    "RAM-only ephemeral relay",
+    "Auto-delete on download",
+    "15-minute expiry",
+    "No accounts, no logs, no telemetry",
+    "Self-hostable relay on Vercel",
+    "Cross-platform: Windows, macOS, Linux",
+    "MIT licensed open source"
+  ],
+  "keywords": "ccdrop, claude, claude-code, anthropic, ai, cli, chat share, ephemeral, privacy",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "ezzcodeezzlife",
+    "url": "https://github.com/ezzcodeezzlife"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ccdrop",
+    "url": "https://github.com/ezzcodeezzlife/ccdrop"
+  },
+  "sourceOrganization": {
+    "@type": "Organization",
+    "name": "ezzcodeezzlife",
+    "url": "https://github.com/ezzcodeezzlife"
+  },
+  "codeRepository": "https://github.com/ezzcodeezzlife/ccdrop",
+  "programmingLanguage": ["JavaScript", "Node.js"],
+  "runtimePlatform": "Node.js",
+  "dateCreated": "2026-09-12",
+  "dateModified": "2026-09-13",
+  "datePublished": "2026-09-12",
+  "inLanguage": "en"
+}
+</script>
+
+<!-- JSON-LD: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is ccdrop?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ccdrop is a CLI that lets you share Anthropic Claude Code chat sessions between computers using a 4-digit PIN. Run `npx ccdrop` to share, `npx ccdrop <PIN>` on the other computer to import."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is ccdrop private?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The relay stores sessions in RAM only, auto-deletes them the instant they are downloaded, expires them after 15 minutes otherwise, and keeps no logs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I self-host ccdrop?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Run `npx ccdrop server` for a local relay on port 3000, or deploy `api/index.js` to Vercel and point clients at it with `npx ccdrop -s <url>`."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which platforms does ccdrop support?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ccdrop runs on macOS, Linux, and Windows with Node.js 18 or newer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does ccdrop require an account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. There are no accounts, no API keys, no signup of any kind."
+      }
+    }
+  ]
+}
+</script>
+
+<!-- JSON-LD: BreadcrumbList -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://ezzcodeezzlife.github.io/ccdrop/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Quick start",
+      "item": "https://ezzcodeezzlife.github.io/ccdrop/#quick-start"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Privacy",
+      "item": "https://ezzcodeezzlife.github.io/ccdrop/#privacy"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Self-hosting",
+      "item": "https://ezzcodeezzlife.github.io/ccdrop/#self-hosting"
+    }
+  ]
+}
+</script>
+
+<!-- JSON-LD: WebSite + SearchAction -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "ccdrop",
+  "url": "https://ezzcodeezzlife.github.io/ccdrop/",
+  "inLanguage": "en",
+  "publisher": {
+    "@type": "Person",
+    "name": "ezzcodeezzlife"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://github.com/ezzcodeezzlife/ccdrop/issues?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+<!-- Styles -->
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #0f172a;
+    color: #f8fafc;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 64px 24px; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0 0 8px; line-height: 1.1; }
+  h2 { font-size: 1.4rem; margin-top: 40px; border-bottom: 1px solid #334155; padding-bottom: 6px; }
+  h3 { font-size: 1.1rem; margin-top: 28px; }
+  p, li { color: #cbd5e1; }
+  code {
+    background: #090d16; padding: 2px 6px; border-radius: 6px; color: #a5f3fc;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.95em;
+  }
+  pre {
+    background: #090d16; padding: 16px; border-radius: 10px; overflow: auto; border: 1px solid #1e293b;
+  }
+  pre code { background: transparent; padding: 0; }
+  a { color: #38bdf8; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .tagline { color: #94a3b8; font-size: 1.15rem; margin-top: 0; }
+  .pill {
+    display: inline-block; padding: 4px 10px; margin: 4px 6px 0 0; border-radius: 999px;
+    background: #1e293b; border: 1px solid #334155; font-size: 0.85rem; color: #cbd5e1;
+  }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0; }
+  .cta a {
+    padding: 12px 18px; border-radius: 10px; font-weight: 600; border: 1px solid #334155;
+    background: #1e293b; transition: transform 0.1s ease;
+  }
+  .cta a:hover { transform: translateY(-1px); text-decoration: none; }
+  .cta .primary { background: #38bdf8; color: #0f172a; border-color: #38bdf8; }
+  footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid #1e293b; color: #64748b; font-size: 0.9rem; }
+  ul.tags { padding: 0; margin: 0; list-style: none; }
+</style>
+
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f172a'/%3E%3Ctext x='50%25' y='56%25' font-family='monospace' font-size='28' font-weight='700' fill='%2338bdf8' text-anchor='middle' dominant-baseline='middle'%3Ecc%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f172a'/%3E%3Ctext x='50%25' y='56%25' font-family='monospace' font-size='28' font-weight='700' fill='%2338bdf8' text-anchor='middle' dominant-baseline='middle'%3Ecc%3C/text%3E%3C/svg%3E">
+
+<!-- Structured-data: Organization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "ccdrop",
+  "url": "https://ezzcodeezzlife.github.io/ccdrop/",
+  "logo": "https://ezzcodeezzlife.github.io/ccdrop/og-image.svg",
+  "sameAs": [
+    "https://github.com/ezzcodeezzlife/ccdrop",
+    "https://www.npmjs.com/package/ccdrop",
+    "https://github.com/ezzcodeezzlife"
+  ]
+}
+</script>
+</head>
+
+<body>
+<div class="wrap">
+
+<h1>ccdrop</h1>
+<p class="tagline">Share Anthropic <strong>Claude Code</strong> chat sessions between computers with a 4-digit PIN. RAM-only relay, auto-deleted on download, no accounts, no logs.</p>
+
+<div class="cta">
+  <a class="primary" href="https://www.npmjs.com/package/ccdrop" rel="noopener">Install on npm</a>
+  <a href="https://github.com/ezzcodeezzlife/ccdrop" rel="noopener">View source on GitHub</a>
+  <a href="https://claude-chat-share.vercel.app" rel="noopener">Public relay</a>
+</div>
+
+<h2 id="quick-start">Quick start</h2>
+<p>On the computer with the chat:</p>
+<pre><code>npx ccdrop</code></pre>
+<p>Then on the other computer:</p>
+<pre><code>npx ccdrop 4829</code></pre>
+
+<h2 id="why">Why ccdrop?</h2>
+<ul>
+  <li>One command, no setup, no accounts.</li>
+  <li>4-digit PIN transfer — way faster than copy-paste.</li>
+  <li>Cross-platform: macOS, Linux, Windows.</li>
+  <li>Privacy-by-default: RAM-only relay, auto-deleted on download.</li>
+  <li>15-minute expiry — even unused PINs self-destruct.</li>
+  <li>Self-hostable relay on Vercel / any Node 18+ host.</li>
+  <li>MIT licensed open source.</li>
+</ul>
+
+<h2 id="commands">Commands</h2>
+<ul>
+  <li><code>npx ccdrop</code> — share a chat session, get a 4-digit PIN.</li>
+  <li><code>npx ccdrop &lt;PIN&gt;</code> — import a chat session using the PIN.</li>
+  <li><code>npx ccdrop server</code> — run a local relay on <code>http://localhost:3000</code>.</li>
+  <li><code>npx ccdrop -s &lt;url&gt;</code> — point at a custom relay.</li>
+</ul>
+
+<h2 id="privacy">Privacy</h2>
+<p>The relay is RAM-only. Sessions live in an in-memory <code>Map</code>, are wiped the instant they are downloaded, expire after 15 minutes, and are otherwise never logged. There are no accounts and no telemetry.</p>
+
+<h2 id="self-hosting">Self-hosting</h2>
+<pre><code>npx ccdrop server
+# or
+npm run deploy   # deploys api/index.js to Vercel</code></pre>
+<p>Then point clients at your URL:</p>
+<pre><code>npx ccdrop -s https://your-app.vercel.app</code></pre>
+
+<h2 id="tags">Topics</h2>
+<ul class="tags">
+  <li class="pill">claude</li>
+  <li class="pill">claude-code</li>
+  <li class="pill">claude-ai</li>
+  <li class="pill">anthropic</li>
+  <li class="pill">ai-coding-assistant</li>
+  <li class="pill">ai-tools</li>
+  <li class="pill">developer-tools</li>
+  <li class="pill">cli</li>
+  <li class="pill">cli-tool</li>
+  <li class="pill">nodejs</li>
+  <li class="pill">npx</li>
+  <li class="pill">npm-package</li>
+  <li class="pill">chat-share</li>
+  <li class="pill">session-share</li>
+  <li class="pill">vercel</li>
+  <li class="pill">serverless</li>
+  <li class="pill">privacy</li>
+  <li class="pill">ephemeral</li>
+  <li class="pill">pin-code</li>
+  <li class="pill">cross-computer</li>
+</ul>
+
+<footer>
+  <p>MIT · <a href="https://github.com/ezzcodeezzlife/ccdrop">github.com/ezzcodeezzlife/ccdrop</a> · <a href="https://www.npmjs.com/package/ccdrop">npmjs.com/package/ccdrop</a></p>
+</footer>
+
+</div>
+</body>
+</html>

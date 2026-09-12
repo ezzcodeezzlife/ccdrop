@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="ccdrop logo with the tagline: Share Claude Code chats between computers with a 4-digit PIN">
+<defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0f172a"/>
+    <stop offset="1" stop-color="#1e293b"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.5" r="0.7">
+    <stop offset="0" stop-color="#38bdf8" stop-opacity="0.35"/>
+    <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+  </radialGradient>
+</defs>
+<rect width="1200" height="630" fill="url(#g)"/>
+<circle cx="600" cy="315" r="380" fill="url(#glow)"/>
+
+<!-- Logo mark -->
+<g transform="translate(120,170)">
+  <rect width="180" height="180" rx="40" fill="#0b1220" stroke="#334155" stroke-width="2"/>
+  <text x="90" y="125" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="86" font-weight="800" fill="#38bdf8" text-anchor="middle">cc</text>
+</g>
+
+<!-- Title -->
+<text x="340" y="240" font-family="ui-sans-serif, system-ui, sans-serif" font-size="92" font-weight="800" fill="#f8fafc">ccdrop</text>
+
+<!-- Tagline -->
+<text x="340" y="310" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="500" fill="#94a3b8">Share Claude Code chats between computers</text>
+<text x="340" y="360" font-family="ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="500" fill="#94a3b8">with a 4-digit PIN.</text>
+
+<!-- Code block -->
+<g transform="translate(340,400)">
+  <rect width="600" height="80" rx="14" fill="#090d16" stroke="#334155" stroke-width="2"/>
+  <text x="24" y="50" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="32" fill="#a5f3fc">$ npx ccdrop</text>
+</g>
+
+<!-- Pills row -->
+<g transform="translate(120,540)" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22">
+  <g><rect width="160" height="44" rx="22" fill="#1e293b" stroke="#334155"/><text x="80" y="29" fill="#cbd5e1" text-anchor="middle">RAM only</text></g>
+  <g transform="translate(180,0)"><rect width="170" height="44" rx="22" fill="#1e293b" stroke="#334155"/><text x="85" y="29" fill="#cbd5e1" text-anchor="middle">Auto-delete</text></g>
+  <g transform="translate(370,0)"><rect width="200" height="44" rx="22" fill="#1e293b" stroke="#334155"/><text x="100" y="29" fill="#cbd5e1" text-anchor="middle">No accounts</text></g>
+  <g transform="translate(590,0)"><rect width="180" height="44" rx="22" fill="#1e293b" stroke="#334155"/><text x="90" y="29" fill="#cbd5e1" text-anchor="middle">Open source</text></g>
+  <g transform="translate(790,0)"><rect width="170" height="44" rx="22" fill="#1e293b" stroke="#334155"/><text x="85" y="29" fill="#cbd5e1" text-anchor="middle">MIT license</text></g>
+</g>
+</svg>
