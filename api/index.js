@@ -152,7 +152,7 @@ export default async function handler(req, res) {
     <!DOCTYPE html>
     <html>
       <head>
-        <title>Claude Code Chat Share Relay</title>
+        <title>ccdrop Relay</title>
         <style>
           body { font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 80px auto; padding: 0 20px; background: #0f172a; color: #f8fafc; text-align: center; }
           .card { background: #1e293b; padding: 40px; border-radius: 16px; border: 1px solid #334155; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); }
@@ -163,10 +163,10 @@ export default async function handler(req, res) {
       </head>
       <body>
         <div class="card">
-          <h1>Claude Code Chat Share Relay</h1>
+          <h1>ccdrop Relay</h1>
           <p>Relay server is live and operational.</p>
           <p>Share Claude Code chats between computers with a 4-digit PIN code:</p>
-          <p><code>npx claude-chat-share</code></p>
+          <p><code>npx ccdrop</code></p>
         </div>
       </body>
     </html>

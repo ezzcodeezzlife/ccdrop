@@ -4,11 +4,7 @@
   "description": "Ultra-fast CLI tool to copy and transfer Claude Code chat sessions between computers via 4-digit PIN code",
   "main": "src/index.js",
   "bin": {
-    "ccdrop": "bin/cli.js",
-    "ccs": "bin/cli.js",
-    "cdrop": "bin/cli.js",
-    "claude-chat-share": "bin/cli.js",
-    "claude-drop": "bin/cli.js"
+    "ccdrop": "bin/cli.js"
   },
   "files": [
     "bin",
@@ -25,8 +21,6 @@
   },
   "keywords": [
     "ccdrop",
-    "ccs",
-    "cdrop",
     "claude",
     "claude-code",
     "chat",
