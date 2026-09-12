@@ -6,7 +6,7 @@ import { runShareCommand, runReceiveCommand, runServerCommand } from '../src/ind
 const program = new Command();
 
 program
-  .name('claudeshare')
+  .name('ccdrop')
   .description('Ultra-fast CLI tool to transfer Claude Code chats between computers via 4-digit PIN code')
   .version('1.0.0');
 
@@ -29,7 +29,7 @@ program
   .action((options) => runServerCommand(options));
 
 // Smart argument parsing:
-// If positional arg is a 4-digit code (e.g. `npx claudeshare 4829`), automatically run receive command!
+// If positional arg is a 4-digit code (e.g. `npx ccdrop 4829`), automatically run receive command!
 const args = process.argv.slice(2);
 
 if (args.length === 1 && /^\d{4}$/.test(args[0])) {
