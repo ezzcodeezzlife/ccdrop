@@ -20,8 +20,7 @@
   "scripts": {
     "start": "node bin/cli.js",
     "server": "node bin/cli.js server",
-    "deploy": "vercel --prod",
-    "prepublishOnly": "npm test 2>/dev/null || true"
+    "deploy": "vercel --prod"
   },
   "keywords": [
     "claude",
