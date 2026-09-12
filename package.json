@@ -1,6 +1,6 @@
 {
   "name": "ccdrop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ultra-fast CLI tool to copy and transfer Claude Code chat sessions between computers via 4-digit PIN code",
   "main": "src/index.js",
   "bin": {
