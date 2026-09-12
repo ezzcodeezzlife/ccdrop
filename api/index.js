@@ -1,4 +1,4 @@
-// Unified Vercel Serverless API Handler
+// Unified Vercel Serverless API Handler (RAM-only, no third-party backups)
 if (!globalThis.__CHAT_STORE__) {
   globalThis.__CHAT_STORE__ = new Map();
 }
@@ -25,33 +25,10 @@ function generateCode() {
   return String(Date.now() % 10000).padStart(4, '0');
 }
 
-async function uploadBytebinBackup(payload) {
-  try {
-    const res = await fetch('https://bytebin.lucko.me/post', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    if (res.ok) {
-      const data = await res.json();
-      return data.key;
-    }
-  } catch (e) {
-    // Ignore backup error
-  }
-  return null;
-}
-
-async function fetchBytebinBackup(key) {
-  try {
-    const res = await fetch(`https://bytebin.lucko.me/${key}`);
-    if (res.ok) {
-      return await res.json();
-    }
-  } catch (e) {
-    // Ignore backup error
-  }
-  return null;
+// Best-effort sweep in long-running Node processes (local `ccdrop server`).
+// Harmless in serverless contexts where the function lifecycle is short.
+if (typeof setInterval === 'function' && !globalThis.__CHAT_CLEANUP_TIMER__) {
+  globalThis.__CHAT_CLEANUP_TIMER__ = setInterval(cleanupExpired, 60 * 1000);
 }
 
 export default async function handler(req, res) {
@@ -77,8 +54,8 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing required session fields (content, sessionId).' });
       }
 
+      cleanupExpired();
       const code = generateCode();
-      const bytebinKey = await uploadBytebinBackup(body);
 
       const entry = {
         code,
@@ -86,7 +63,6 @@ export default async function handler(req, res) {
         title: body.title || 'Claude Chat Session',
         originalCwd: body.originalCwd || '',
         content: body.content,
-        bytebinKey,
         createdAt: Date.now(),
         expiresAt: Date.now() + 15 * 60 * 1000
       };
@@ -111,29 +87,17 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing code parameter. Example: ?code=1234' });
       }
 
+      cleanupExpired();
       const cleanCode = String(code).trim();
-      let entry = store.get(cleanCode);
-
-      if (entry) {
-        store.delete(cleanCode);
-      } else {
-        for (const [c, e] of store.entries()) {
-          if (c === cleanCode && e.bytebinKey) {
-            const backup = await fetchBytebinBackup(e.bytebinKey);
-            if (backup) {
-              entry = backup;
-              store.delete(c);
-              break;
-            }
-          }
-        }
-      }
+      const entry = store.get(cleanCode);
 
       if (!entry) {
         return res.status(404).json({
           error: 'Invalid or expired 4-digit code. Sessions are deleted immediately after download or after 15 minutes.'
         });
       }
+
+      store.delete(cleanCode);
 
       return res.status(200).json({
         success: true,
