@@ -3,8 +3,7 @@
 **Super easy way to copy a Claude Code chat between computers**: upload it to a small RAM-only server, get a 4-digit PIN, then run `npx ccdrop <PIN>` on the other machine. The session is auto-deleted from the server the instant it lands.
 
 ```bash
-npx ccdrop              # share: pick a session, get a 4-digit PIN
-npx ccdrop 4829         # import: paste the PIN, done
+npx ccdrop              # share: pick a session, get a 4-digit PIN, then npx ccdrop <PIN> on the other computer to import
 ```
 
 No accounts. No login. No setup.
