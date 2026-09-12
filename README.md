@@ -65,6 +65,11 @@ Then point clients at your deployment:
 npx ccdrop -s https://your-app.vercel.app
 ```
 
+## Links
+
+- GitHub: https://github.com/ezzcodeezzlife/ccdrop
+- npm: https://www.npmjs.com/package/ccdrop
+
 ## License
 
 MIT
