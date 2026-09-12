@@ -1,4 +1,5 @@
 node_modules
 .vercel
 *.tgz
+*.log
 claude-chat-*.md
